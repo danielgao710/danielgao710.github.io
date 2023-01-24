@@ -65,15 +65,17 @@
                 void loop() {<br>
                   buttonState = digitalRead(buttonPin); // Read and record the state of the button<br>
                   if (buttonState == HIGH) {  // If the button is pressed<br>
-                    while (buttonState == HIGH) { // As long as the button is pressed<br>
-                      digitalWrite(ledPin, HIGH); // Red LED on<br>
-                      delay(100); // delay for 0.1 seconds<br>
-                      digitalWrite(ledPin, LOW); // Red LED off<br>
-                      delay(100); // delay for 0.1 seconds<br>
-                      buttonState = digitalRead(buttonPin); // Update the state of the button<br>
+                    for (int i = 1; i <= fadeAmount; i ++) { // repeat the following for "fadeAmount" times<br>
+                        digitalWrite(ledPin, HIGH); // Red LED on<br>
+                        delay(100); // delay for 0.1 seconds<br>
+                        digitalWrite(ledPin, LOW); // Red LED off<br>
+                        delay(100); // delay for 0.1 seconds<br>
+                    }<br>
+                    while (buttonState == HIGH) { // As long as the button is still pressed<br>
                       analogWrite(fadePin, brightness); // Light up the green LED to the current brightness<br>
                       brightness = brightness + fadeAmount; // Increase the brightness by the change amount<br>
                       delay(30); // delay for 0.03 seconds<br>
+                      buttonState = digitalRead(buttonPin); // Update the state of the button<br>
                     }<br>
                   } else { // If the button is released<br>
                     digitalWrite(ledPin, LOW); // Red LED off<br>
