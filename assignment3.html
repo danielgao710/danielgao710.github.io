@@ -1,0 +1,85 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>A3: Input&Output</title>
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Input&Output</h1>
+            <p>
+                <img src="schematic3.jpg" width=400></a>
+            </p>
+            <p>
+                A photoresistor is connected between power and ground, along with analog read port and a 10kΩ resistor. <br>
+                Two LEDs are connected between port and ground, along with two 220Ω resistor to protect from excessive current. <br>
+                The photoresistor controls the status of two LEDs. <br>
+                V = I * R <br>
+                5V - 1.8V = 20mA * R <br>
+                3.2V = 0.02A * R <br>
+                R = 160Ω <br>
+                Therefore, resistance cannot be smaller than 160Ω. 220Ω resistor works fine!
+            </p>
+            <p>
+                <img src="circuit3.jpg" width=400></a>
+            </p>
+            <p>
+                The circuit is from Pin 10, 9, A0, and 5V power to ground, with a photoresistor, LEDs, and resistors in between.
+            </p>
+            <p>
+            <img src="https://media0.giphy.com/media/igp8rdVgV1wekhYA9v/giphy.gif?cid=790b7611bc395d8ce73b93ff0b029ec9e47dc21644fecadf&rid=giphy.gif&ct=g" width=400></a>
+            </p>
+            <p>
+            A GIF showing the operation of the circuit!
+            </p>
+            <p>
+                The code that makes this work:
+            </p>
+            <code>
+                // The analog input from the photoresistor determine the status of two LEDs<br>
+                // The red LED get brighter as more light is absorbed by the photoresistor<br>
+                // The green LED get dimmer as more light is absorbed by the photoresistor<br>
+                const int analogInPin = A0; // Analog input pin that the photoresistor is attached to <br>
+                const int red = 9; // Analog output pin that the red LED is attached to<br>
+                const int green = 10; // Analog output pin that the green LED is attached to<br>
+                <br>
+                int sensorValue = 0; // value read from the pot<br>
+                int redValue = 0; // red value output<br>
+                int greenValue = 0; // green value output<br>
+                <br>
+                void setup() {<br>
+                  // initialize serial communications at 9600 bps:<br>
+                  Serial.begin(9600);<br>
+                }<br>
+                <br>
+                void loop() {<br>
+                  sensorValue = analogRead(analogInPin); // read the analog in value:<br>
+                  if (sensorValue < 630 && sensorValue > 330) { // if the analog value of photoresistor is in this range<br>
+                    redValue = map(sensorValue, 330, 630, 0, 255);// map it to the range of the red analog out:<br>
+                    greenValue = map(sensorValue, 330, 630, 255, 0);// map it to the range of the green analog out:<br>
+                    analogWrite(red, redValue); // light up red LED to the mapped value<br>
+                    analogWrite(green, greenValue); // light up green LED to the mapped value<br>
+                  }<br>
+                <br>
+                  // print the results to the Serial Monitor:<br>
+                  Serial.print("sensor = ");<br>
+                  Serial.print(sensorValue);<br>
+                  Serial.print(" red = ");<br>
+                  Serial.print(redValue);<br>
+                  Serial.print(" green = ");<br>
+                  Serial.println(greenValue);<br>
+
+                  // wait 2 milliseconds<br>
+                  delay(2);<br>
+                }<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
