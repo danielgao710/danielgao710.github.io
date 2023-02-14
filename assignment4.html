@@ -1,0 +1,75 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>A4: Libraries</title>
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>Libraries</h1>
+            <p>
+                <img src="schematic4.jpg" width=400></a>
+            </p>
+            <p>
+                The circuit uses a Membrane Switch Module as input and a LCD screen as output. <br>
+                The characters on the LCD screen will change as different keys on the keypad are pressed. <br>
+                reference: https://linuxhint.com/interface-keypad-and-lcd-arduino/#:~:text=In%20the%20code%20the%20display,separately%20for%20rows%20and%20columns.
+            </p>
+            <p>
+                <img src="circuit4.jpg" width=400></a>
+            </p>
+            <p>
+                I used a potentiometer with changing resistance up to 10k ohm to control the brightness of the screen.
+            </p>
+            <p>
+            <img src="https://media4.giphy.com/media/Q7IVlqDQ5imMBRAoJj/giphy.gif?cid=790b76110b7945e12a43ad1ca482ff5d3b1f3a6023cff8e0&rid=giphy.gif&ct=g" width=400></a>
+            </p>
+            <p>
+            A GIF showing the operation of the circuit!
+            </p>
+            <p>
+                The code that makes this work:
+            </p>
+            <code>
+                #include <Keypad.h> // import Keypad library <br>
+                #include <LiquidCrystal.h> // import LCD library<br>
+                LiquidCrystal lcd(13, 12, 11, 10, 1, 0);  // initialize the pins for LCD<br>
+
+                const byte numRows= 4; // declare the number of rows<br>
+                const byte numCols= 4; // declare the number of columns<br>
+                char keymap[numRows][numCols]= { // set up key pad characters<br>
+                  {'1', '2', '3', 'A'},<br>
+                  {'4', '5', '6', 'B'},<br>
+                  {'7', '8', '9', 'C'},<br>
+                  {'*', '0', '#', 'D'}<br>
+                };<br>
+
+                byte rowPins[numRows] = {5,4,3,2}; // corresponding pins for keypad rows<br>
+                byte colPins[numCols] = {9,8,7,6}; // corresponding pins for keypad rows<br>
+
+                // map the keys on the keypad<br>
+                Keypad keypad= Keypad(makeKeymap(keymap), rowPins, colPins, numRows, numCols);<br>
+
+                void setup() {<br>
+                  lcd.begin(16, 2); // initialize display size<br>
+                  Serial.begin(9600); // initialize the serial monitor<br>
+                }<br>
+
+                void loop() {<br>
+                  char key = keypad.getKey(); // get the key<br>
+                  if (key) { // if key is pressed<br>
+                    Serial.println(key); // print the key in serial monitor<br>
+                    lcd.print(key); // print the key in LCD<br>
+                  }<br>
+                }<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
