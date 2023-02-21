@@ -1,0 +1,81 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>A5: High(er) voltage and transistors!</title>
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head> 
+    <body> 
+
+        <div class="header">
+            <h1>High(er) voltage and transistors!</h1>
+            <p>
+                <img src="schematic5.jpg" width=400></a>
+            </p>
+            <p>
+                The circuit has an N-MOSFET transistor, an ultrasonic sensor, and an LED strip.
+                <br>
+                The ultrasonic sensor detect the distance to an object, which is the brightness of the LED strip based on.
+                <br>
+                The LED strip is connected to a 12V external power supply, and is controlled by the transistor.
+            </p>
+            <p>
+                <img src="circuit4.jpg" width=400></a>
+            </p>
+            <p>
+                From the LED strip user manual, I learned that it is rated at 12V and 1.5A. <br>
+                The external power supply can output 12V and 2A, which would be enough to light the LED.
+            </p>
+            <p>
+            <img src="https://media3.giphy.com/media/v1.Y2lkPTc5MGI3NjExMGU4NGEwMzEzYjM0YzhiMDY5Yzc5MTA1M2M4ZjNiN2Y2Mzg2YTNiOSZjdD1n/83D3RVcuKzu1JyJLiz/giphy.gif" width=400></a>
+            </p>
+            <p>
+            A GIF showing the operation of the circuit!
+            </p>
+            <p>
+                The code that makes this work:
+            </p>
+            <code>
+                const int trigPin = 9; // initialize the trigger pin <br>
+                const int echoPin = 10; // initialize the echo pin<br>
+                const int ledPin = 6; // initialize the LED strip pin<br>
+
+                long duration; // initialize the time it takes for the ultrasonic pulse to travel<br>
+                int distance; // initialize the distance between the sensor and the object<br>
+                int brightness; // initialize the brightness of the LED strip<br>
+
+                void setup() {<br>
+                  pinMode(trigPin, OUTPUT); // set trigger as output<br>
+                  pinMode(echoPin, INPUT); // set echo as input<br>
+                  pinMode(ledPin, OUTPUT); // set LED as output<br>
+                  digitalWrite(ledPin, LOW);  // turn the LED off at the beginning<br>
+                  Serial.begin(9600);  // initialize serial monitor<br>
+                }<br>
+
+                void loop() {<br>
+                  // send a 10us pulse with the ultrasonic sensor, and turn it off afterwards<br>
+                  digitalWrite(trigPin, LOW);<br>
+                  delayMicroseconds(2);<br>
+                  digitalWrite(trigPin, HIGH);<br>
+                  delayMicroseconds(10);<br>
+                  digitalWrite(trigPin, LOW);<br>
+                  duration = pulseIn(echoPin, HIGH); // measure the duration of the pulse<br>
+                  distance = duration * 0.034 / 2; // calculate the distance based on the duration<br>
+                  Serial.println(distance);  // keep track of the distance in monitor<br>
+                  if (distance < 5) { // if the distance is less than 5 cm<br>
+                    brightness = 255;  // set the brightness to full brightness<br>
+                  } else {<br>
+                    brightness = 0;  // set the brightness to zero brightness<br>
+                  }<br>
+                  analogWrite(ledPin, brightness);  // set the LED brightness<br>
+                  delay(200);  // delay for 0.2 seconds<br>
+                }<br>
+            </code>
+        </div>
+        
+    </body>
+</html>
