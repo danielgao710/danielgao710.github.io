@@ -1,0 +1,102 @@
+<!DOCTYPE html> 
+<html> 
+    <head> 
+        <meta charset="utf-8"> 
+        <meta name="viewport" content="width=device-width, maximum-scale=1.0" />
+
+        <title>Final Project!</title>
+
+        <link href="style.css" media="screen" rel="stylesheet" type="text/css" />
+
+    </head>
+    <body>
+
+        <div class="header">
+            <h1>Final Project!</h1>
+            <h2>Project Concept/Motivation</h2>
+            <p>
+                I wanted to make a bed phone holder lamp. <br>
+                It's brightness and ON/OFF can be easily controlled <br>
+                so that I can read under light in bed.
+            </p>
+            <p>
+                <img src="schematicf.jpg" width=400></a>
+            </p>
+            <p>
+                The X-value of the joystick controls the brightness of the LED light strip. <br>
+                The Y-value of the joystick controls the ON/OFF of the LED light strip. <br>
+                When the LED light strip is turned on, it will automatically set to the previous brightness. <br>
+                The red LED in the circuit is for early testing without the battery.
+            </p>
+            <p>
+                <img src="circuitf.jpg" width=400></a>
+            </p>
+            <p>
+                V = I * R <br>
+                5V - 1.8V = 20mA * R <br>
+                3.2V = 0.02A * R <br>
+                R = 160Ω <br>
+                Therefore, resistance cannot be smaller than 160Ω. 220Ω resistor works fine!
+            </p>
+            <p>
+                <img src="1.jpg" width=400></a>
+                <img src="2.jpg" width=400></a>
+            </p>
+            <p>
+                For safety and stability, I made enclosures for the circuit. <br>
+                I packed the Arduino board, battery, and mini breadboard into a cardboard box <br>
+                I also made a control panel for the Joystick, which is connected to the cardboard box. <br>
+                I attached LED light strip into an empty napkin box, and fixed the box on the phone stand. <br>
+            </p>
+            <p>
+            <img src="https://media4.giphy.com/media/v1.Y2lkPTc5MGI3NjExNDkyNzlhMjhiMjJkZTM1NjQyMzkwNDM5MGZhNjE0YmYyMTVkYTliMiZjdD1n/01abSPBR9SIhJoqjcD/giphy.gif" width=400></a>
+            </p>
+            <p>
+            A GIF showing the operation of the prototype!
+            </p>
+            <p>
+                The code that makes this work:
+            </p>
+            <code>
+                int brightness = 0; // initialize the brightness <br>
+
+                void setup() {<br>
+                Serial.begin(9600); // Initialize the serial<br>
+                pinMode(10, OUTPUT); // Set up the LED output<br>
+                }<br>
+
+                void loop() {<br>
+                  int s1 = analogRead(A0); // read the x-value of joystick<br>
+                  int s2 = analogRead(A1); // read the y-value of joystick<br>
+                  // turn the xy value and the current brightness in to a readable format, and send it to serial<br>
+                  Serial.print("[");<br>
+                  Serial.print(s1);<br>
+                  Serial.print(",");<br>
+                  Serial.print(s2);<br>
+                  Serial.print(",");<br>
+                  Serial.print(brightness);<br>
+                  Serial.println("]");<br>
+                  if (s1 > 600) { // if the x-value of joystick is larger than 600<br>
+                    if (brightness <= 200) { // if the LED hasn't reached to maximum brightness<br>
+                      brightness += 50; // increase the brightness by 50<br>
+                      analogWrite(10, brightness); // light up the LED to the current brightness<br>
+                    }<br>
+                  } else if (s1 < 300) { // if the x-value of joystick is smaller than 300<br>
+                    if (brightness >= 50) { // if the LED hasn't reached to minimum brightness<br>
+                      brightness -= 50; // decrease the brightness by 50<br>
+                      analogWrite(10, brightness); // light up the LED to the current brightness<br>
+                    }<br>
+                  }<br>
+                  if (s2 > 800) { // if the y-value of joystick is larger than 600<br>
+                    analogWrite(10, 0); // turn off the LED<br>
+                  }<br>
+                  if (s2 < 300) { // if the y-value of joystick is smaller than 300<br>
+                    analogWrite(10, brightness); // light up the LED to the current brightness<br>
+                  }<br>
+                  delay(200); // wait for 0.2 seconds<br>
+                }<br>
+            </code>
+        </div>
+
+    </body>
+</html>
